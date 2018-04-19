@@ -56,10 +56,10 @@ class Login extends Component {
 
                     <div className="form-group">
                         <FormGroup
-                            controlId="email"
+                            controlId="username"
 
                         >
-                            <ControlLabel>Email</ControlLabel>
+                            <ControlLabel>Username</ControlLabel>
                             <FormControl
                                 type="text"
                                 value={this.state.username}
