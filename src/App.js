@@ -10,14 +10,23 @@ import Post from './pages/post/post'
 import AddPost from './pages/addPost/addPost'
 
 class App extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            messages: []
+        }
+    }
+
     render() {
         return (
-            <div className="App">
+            <div className="App" {...this.props}>
                 <Header/>
 
                 <div className="container">
-                    <div className="row">
-                        <Switch>
+                    <div className="row" >
+                        <Switch >
                             <Route exact path='/' component={Main}/>
                             <Route exact path='/signup' component={Signup}/>
                             <Route exact path='/login' component={Login}/>
@@ -35,6 +44,8 @@ class App extends Component {
                         </Switch>
                     </div>
                 </div>
+
+
 
             </div>
         );

@@ -72,3 +72,12 @@
   min-width: 100px;
   font-size: 12px;
 }
+
+.messages-container {
+  position: fixed;
+  bottom: 0px;
+  right: 10px;
+  width: 50%;
+  min-width: 300px;
+  z-index: 2;
+}

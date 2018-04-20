@@ -4,7 +4,8 @@ import gql from 'graphql-tag'
 import { FormGroup, FormControl } from 'react-bootstrap'
 
 import Loading from '../../components/loading/loading'
-
+import Messages from "../../components/messages/messages"
+import { validateString } from '../../utils/validator'
 
 class Post extends Component {
     constructor(props) {
@@ -13,7 +14,8 @@ class Post extends Component {
 
         this.state = {
             comment: '',
-            post: null
+            post: null,
+            notification: null
         };
 
         this.addComment = this.addComment.bind(this);
@@ -35,8 +37,13 @@ class Post extends Component {
         let {comment} = this.state;
 
 
-        if (!comment) {
-            console.log('Not valid ', this.state);
+        if (validateString(comment, {min: 3, max: 200}) !== 'success') {
+            this.setState({
+                notification: {
+                    type: 'error',
+                    text: 'Not valid comment'
+                }
+            });
             return;
         }
 
@@ -119,6 +126,12 @@ class Post extends Component {
         return (
             <div className="main">
 
+                {
+                    this.state.notification ?
+                        <Messages message={this.state.notification} />
+                        : null
+                }
+
                 <div className="post">
                     <div className="post-header">
                         <h2>{post.title}</h2>
@@ -138,6 +151,7 @@ class Post extends Component {
                             <div className="form-group">
                                 <FormGroup
                                     controlId="comment"
+                                    validationState={validateString(this.state.password, {min: 3, max: 200})}
                                 >
                                     <FormControl
                                         type="text"
@@ -148,6 +162,7 @@ class Post extends Component {
                                     <FormControl.Feedback/>
                                 </FormGroup>
                             </div>
+
 
                             {this.props.loading ? <Loading/> : (
                                 <div className="form-group">
