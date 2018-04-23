@@ -172,7 +172,7 @@ class Post extends Component {
                         </form>
                     </div>
                     :
-                    <div className="add-comment">You have to be logged in to add comment</div>
+                    <div className="add-comment"><b>You have to be logged in to add comment</b></div>
                 }
 
 
