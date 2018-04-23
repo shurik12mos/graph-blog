@@ -16,6 +16,7 @@ class Login extends Component {
             password: '',
             notification: null
         };
+
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -30,6 +31,9 @@ class Login extends Component {
                     type: 'error',
                     text: 'Not valid username'
                 }
+            }, ()=> {
+                console.log(this.state);
+
             });
             return;
         }

@@ -37,7 +37,7 @@ class Post extends Component {
         let {comment} = this.state;
 
 
-        if (validateString(comment, {min: 3, max: 200}) !== 'success') {
+        if (validateString(comment, {min: 1, max: 200}) !== 'success') {
             this.setState({
                 notification: {
                     type: 'error',
@@ -151,7 +151,7 @@ class Post extends Component {
                             <div className="form-group">
                                 <FormGroup
                                     controlId="comment"
-                                    validationState={validateString(this.state.password, {min: 3, max: 200})}
+                                    validationState={validateString(this.state.password, {min: 1, max: 200})}
                                 >
                                     <FormControl
                                         type="text"

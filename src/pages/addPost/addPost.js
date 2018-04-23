@@ -6,6 +6,8 @@ import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { POST_QUERY } from '../main/index';
 
 import Loading from '../../components/loading/loading'
+import Messages from "../../components/messages/messages"
+import { validateString } from '../../utils/validator'
 
 
 class AddPost extends Component {
@@ -13,7 +15,8 @@ class AddPost extends Component {
         super(props);
         this.state = {
             title: '',
-            content: ''
+            content: '',
+            notification: null
         };
 
         this.addPost = this.addPost.bind(this);
@@ -25,8 +28,23 @@ class AddPost extends Component {
         let { title, content } = this.state;
 
 
-        if (!title || !content) {
-            console.log('Not valid ', this.state);
+        if (validateString(title, {min: 1, max: 200}) !== 'success') {
+            this.setState({
+                notification: {
+                    type: 'error',
+                    text: 'Not valid title'
+                }
+            });
+            return;
+        }
+
+        if (validateString(content, {min: 1, max: 2000}) !== 'success') {
+            this.setState({
+                notification: {
+                    type: 'error',
+                    text: 'Not valid content'
+                }
+            });
             return;
         }
 
@@ -72,11 +90,18 @@ class AddPost extends Component {
             <div className="add-post-wrapper">
                 <h2>Add Post</h2>
 
+                {
+                    this.state.notification ?
+                        <Messages message={this.state.notification} />
+                        : null
+                }
+
                 <div className="add-post">
                     <form onSubmit={this.addPost}>
                         <div className="form-group">
                             <FormGroup
                                 controlId="title"
+                                validationState={validateString(this.state.username, {min: 1, max: 200})}
                             >
                                 <ControlLabel>Title</ControlLabel>
                                 <FormControl
@@ -92,6 +117,7 @@ class AddPost extends Component {
                         <div className="form-group">
                             <FormGroup
                                 controlId="conent"
+                                validationState={validateString(this.state.username, {min: 1, max: 2000})}
                             >
                                 <ControlLabel>Content</ControlLabel>
                                 <FormControl

@@ -9,9 +9,11 @@ class Messages extends Component {
             messages: []
         };
 
-        this.addMessage(this.props.message);
-
         this.handleClose = this.handleClose.bind(this);
+    }
+
+    componentDidMount(){
+        this.addMessage(this.props.message);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -25,9 +27,9 @@ class Messages extends Component {
 
         let messages = [...this.state.messages];
 
-        this.setState = {
+        this.setState({
             messages: [...messages, message]
-        };
+        });
 
         message.interval = setTimeout(()=> {
             let messages = [...this.state.messages];

@@ -11,7 +11,8 @@ export const validateString = function(data, conditions) {
         return 'error';
     }
 
-    if (conditions.regexp && !data.match(conditions.regexp)) {
+
+    if (conditions.regexp && !data.match(new RegExp(conditions.regexp, "i"))) {
         return 'error';
     }
 

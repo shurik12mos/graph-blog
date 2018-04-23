@@ -4,6 +4,8 @@ import gql from 'graphql-tag'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 
 import Loading from '../../components/loading/loading'
+import Messages from "../../components/messages/messages";
+import { validateString } from '../../utils/validator';
 
 class Signup extends Component {
     constructor(props) {
@@ -11,20 +13,47 @@ class Signup extends Component {
         this.state = {
             username: '',
             email: '',
-            password: ''
-        }
+            password: '',
+            notification: null
+        };
 
-        this.handleSubmit = this.handleSubmit.bind(this);
+       this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('this ', this);
 
         let { email, password, username } = this.state;
 
 
-        if (!email || !password || !username) {
-            console.log('Not valid ', this.state);
+        if (validateString(username, {min: 3, max: 20}) !== 'success') {
+            this.setState({
+                notification: {
+                    type: 'error',
+                    text: 'Not valid username'
+                }
+            });
+            return;
+        }
+
+        if (validateString(password, {min: 3, max: 20}) !== 'success') {
+            this.setState({
+                notification: {
+                    type: 'error',
+                    text: 'Not valid password'
+                }
+            });
+            return;
+        }
+
+        if (validateString(email, {min: 3, max: 50, regexp: '.*@\\w*\\.\\w*'}) !== 'success') {
+            this.setState({
+                notification: {
+                    type: 'error',
+                    text: 'Not valid email'
+                }
+            });
             return;
         }
 
@@ -51,10 +80,18 @@ class Signup extends Component {
 
         return (
             <div className="flex pa1 justify-between nowrap orange">
+
+                {
+                    this.state.notification ?
+                        <Messages message={this.state.notification} />
+                        : null
+                }
+
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <FormGroup
                             controlId="username"
+                            validationState={validateString(this.state.username, {min: 3, max: 20})}
                         >
                             <ControlLabel>Username</ControlLabel>
                             <FormControl
@@ -72,6 +109,7 @@ class Signup extends Component {
                     <div className="form-group">
                         <FormGroup
                             controlId="email"
+                            validationState={validateString(this.state.email, {min: 3, max: 20, regexp: '.*@\\w*\\.\\w*'})}
                         >
                             <ControlLabel>Email</ControlLabel>
                             <FormControl
@@ -87,6 +125,7 @@ class Signup extends Component {
                     <div className="form-group">
                         <FormGroup
                             controlId="password"
+                            validationState={validateString(this.state.password, {min: 3, max: 20})}
                         >
                             <ControlLabel>Password</ControlLabel>
                             <FormControl
