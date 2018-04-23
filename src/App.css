@@ -31,6 +31,18 @@
   height: auto;
 }
 
+.main-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search {
+  margin-bottom: -20px;
+}
+
 .post {
   text-align: left;
   border-left: none;
