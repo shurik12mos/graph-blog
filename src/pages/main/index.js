@@ -7,6 +7,7 @@ import { Pager, FormGroup, FormControl } from 'react-bootstrap'
 
 import Loading from '../../components/loading/loading'
 import {validateString} from "../../utils/validator";
+import Message from "../../components/messages/messages";
 
 
 class Main extends Component {
@@ -91,14 +92,14 @@ class Main extends Component {
     }
 
     render() {
-        if (this.props.postQuery && this.props.postQuery.loading) {
+        let {error, loading} = this.props.postQuery;
+
+        if (loading) {
             return < Loading/>;
         }
 
-        if (this.props.postQuery && this.props.postQuery.error) {
-            return <div className="center-block">
-                <p className="text-warning">Error</p>
-            </div>
+        if (error) {
+            return <Message message={error.message} type={'error'}/>
         }
 
 

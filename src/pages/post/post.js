@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import { FormGroup, FormControl } from 'react-bootstrap'
 
 import Loading from '../../components/loading/loading'
-import Messages from "../../components/messages/messages"
+import Message from "../../components/messages/messages"
 import { validateString } from '../../utils/validator'
 
 class Post extends Component {
@@ -101,7 +101,7 @@ class Post extends Component {
         }
 
         if (error) {
-            return <div>Error</div>;
+            return <Message message={error.message} type={'error'}/>;
         }
 
         if (!post) {
@@ -128,7 +128,7 @@ class Post extends Component {
 
                 {
                     this.state.notification ?
-                        <Messages message={this.state.notification} />
+                        <Message message={this.state.notification} />
                         : null
                 }
 

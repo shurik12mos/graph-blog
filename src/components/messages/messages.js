@@ -1,80 +1,80 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 
-class Messages extends Component {
+class Message extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            messages: []
+            show: true,
+            interval: null
         };
 
         this.handleClose = this.handleClose.bind(this);
     }
 
     componentDidMount(){
-        this.addMessage(this.props.message);
+        this.addMessage();
     }
+
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.message && !nextProps.message.interval) {
-           this.addMessage(nextProps.message);
+        if(nextProps.message) {
+            this.addMessage();
         }
     }
 
-    addMessage(message){
-        if (!message) return;
-
-        let messages = [...this.state.messages];
+    addMessage() {
+        let interval = setTimeout(()=>{
+            clearTimeout(this.state.interval)
+            this.setState({
+                show: false,
+                interval: null
+            })
+        }, 5000);
 
         this.setState({
-            messages: [...messages, message]
+            show: true,
+            interval: interval
         });
-
-        message.interval = setTimeout(()=> {
-            let messages = [...this.state.messages];
-
-            if (messages.length) {
-                messages.shift();
-                this.setState({messages: messages});
-            }
-        }, 5000);
     }
 
+    handleClose() {
+        let { interval } = this.state;
 
-    handleClose(index) {
-        let messages = [...this.state.messages];
-
-        if (messages.length) {
-            clearTimeout(messages[index].interval);
-            messages.splice(index, 1);
-            this.setState({messages: messages});
-        }
+        clearTimeout(interval);
+        this.setState({
+            show: false,
+            interval: null
+        });
     }
 
     render() {
+        if(!this.state.show) {
+            return null;
+        }
 
-        let messages = this.state.messages.map((message, index) => {
-            return (
-                <div className={message.type === "error" ? 'alert alert-danger' : 'alert alert-success'} key={index}>
-                    {message.text}
-                    <button type="button" className="close" aria-label="Close" onClick={() => this.handleClose(index)}>
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            );
-        });
-
+        let {type, message}  = this.props;
 
         return (
             <div className="messages-container">
-                {messages}
+                <div className={type === "error" ? 'alert alert-danger' : 'alert alert-success'}>
+                    {message}
+                    <button type="button" className="close" aria-label="Close" onClick={() => this.handleClose()}>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             </div>
         )
     }
 }
 
+Message.propTypes = {
+    message: PropTypes.string.isRequired,
+    type: PropTypes.string
+};
 
 
-export default Messages;
+
+export default Message;
 

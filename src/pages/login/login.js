@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import {FormGroup, FormControl, ControlLabel} from 'react-bootstrap'
 
 import Loading from '../../components/loading/loading'
-import Messages from "../../components/messages/messages";
+import Message from "../../components/messages/messages";
 import { validateString } from '../../utils/validator';
 
 
@@ -94,7 +94,10 @@ class Login extends Component {
 
                 {
                     this.state.notification ?
-                        <Messages message={this.state.notification} />
+                        <Message
+                            message={this.state.notification.text}
+                            type={this.state.notification.type}
+                        />
                         : null
                 }
 
