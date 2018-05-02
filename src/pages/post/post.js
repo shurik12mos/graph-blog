@@ -36,8 +36,7 @@ class Post extends Component {
 
         let {comment} = this.state;
 
-
-        if (validateString(comment, {min: 1, max: 200}) !== 'success') {
+        if (!comment || validateString(comment, {min: 1, max: 200}) !== 'success') {
             this.setState({
                 notification: {
                     type: 'error',
@@ -128,7 +127,7 @@ class Post extends Component {
 
                 {
                     this.state.notification ?
-                        <Message message={this.state.notification} />
+                        <Message message={this.state.notification.text} type={this.state.notification.type} />
                         : null
                 }
 
